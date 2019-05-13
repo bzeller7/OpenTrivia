@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OpenTrivia.Properties
+namespace OpenTriviaConsumer.Properties
 {
 
 

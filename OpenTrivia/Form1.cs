@@ -16,11 +16,21 @@ namespace OpenTriviaConsumer
         public Form1()
         {
             InitializeComponent();
+            client = new HttpClient();
+            client.BaseAddress = new Uri("https://opentdb.com");
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private static HttpClient client;
+
+        private async void Form1_Load(object sender, EventArgs e)
         {
-            HttpClient client = new HttpClient();
+            HttpResponseMessage response =
+                await client.GetAsync("api_category.php");
+            if (response.IsSuccessStatusCode)
+            {
+                string cats = await response.Content.ReadAsStringAsync();
+                MessageBox.Show(cats);
+            }
         }
     }
 }

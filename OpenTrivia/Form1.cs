@@ -29,19 +29,58 @@ namespace OpenTriviaConsumer
                 await client.GetAsync("api_category.php");
             if (response.IsSuccessStatusCode)
             {
-                string cats = 
+                string cats =
                     await response.Content.ReadAsStringAsync();
 
                 CategoryResponse catResponse =
                     JsonConvert.DeserializeObject<CategoryResponse>(cats);
 
-                //cboCategories.DataSource = catResponse.trivia_categories;
-                //cboCategories.DisplayMember = nameof(TriviaCategory.name);
+                PopulateCategoryComboBox(catResponse);
+            }
+        }
 
-                foreach (TriviaCategory category in catResponse.trivia_categories)
-                {
-                    cboCategories.Items.Add(category.name);
-                }
+        private void PopulateCategoryComboBox(CategoryResponse catResponse)
+        {
+            //cboCategories.DataSource = catResponse.trivia_categories;
+            //cboCategories.DisplayMember = nameof(TriviaCategory.name);
+
+            List<TriviaCategory> entertainment = getEntertainmentCategories(catResponse);
+
+            foreach (TriviaCategory category in entertainment)
+            {
+                cboCategories.Items.Add(category.name);
+            }
+        }
+
+        private static List<TriviaCategory> getEntertainmentCategories(CategoryResponse catResponse)
+        {
+            //LINQ to Objects
+            //all entertainment categories sorted alphabetically
+            return catResponse.trivia_categories
+                            .Where(c => c.name.StartsWith("Entertainment"))
+                            .OrderBy(c => c.name)
+                            .ToList();
+        }
+
+        private async void cboCategories_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboCategories.SelectedIndex < 0)
+                return;
+
+            ////Get selected category id
+            //TriviaCategory cat = (TriviaCategory)cboCategories.SelectedItem;
+            TriviaCategory cat =
+                    cboCategories.SelectedItem as TriviaCategory;
+            int selectedId = cat.id;
+
+            //Get number of questions in that category
+            HttpResponseMessage msg =
+                await client.GetAsync($"api_count.php?category={selectedId}");
+
+            if (msg.IsSuccessStatusCode)
+            {
+                string response = await msg.Content.ReadAsStringAsync();
+                MessageBox.Show(response);
             }
         }
     }

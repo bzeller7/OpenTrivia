@@ -34,10 +34,11 @@
             // cboCategories
             // 
             this.cboCategories.FormattingEnabled = true;
-            this.cboCategories.Location = new System.Drawing.Point(270, 53);
+            this.cboCategories.Location = new System.Drawing.Point(165, 53);
             this.cboCategories.Name = "cboCategories";
-            this.cboCategories.Size = new System.Drawing.Size(177, 21);
+            this.cboCategories.Size = new System.Drawing.Size(282, 21);
             this.cboCategories.TabIndex = 0;
+            this.cboCategories.SelectedIndexChanged += new System.EventHandler(this.cboCategories_SelectedIndexChanged);
             // 
             // Form1
             // 

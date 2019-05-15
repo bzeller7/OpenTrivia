@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,8 +29,19 @@ namespace OpenTriviaConsumer
                 await client.GetAsync("api_category.php");
             if (response.IsSuccessStatusCode)
             {
-                string cats = await response.Content.ReadAsStringAsync();
-                MessageBox.Show(cats);
+                string cats = 
+                    await response.Content.ReadAsStringAsync();
+
+                CategoryResponse catResponse =
+                    JsonConvert.DeserializeObject<CategoryResponse>(cats);
+
+                //cboCategories.DataSource = catResponse.trivia_categories;
+                //cboCategories.DisplayMember = nameof(TriviaCategory.name);
+
+                foreach (TriviaCategory category in catResponse.trivia_categories)
+                {
+                    cboCategories.Items.Add(category.name);
+                }
             }
         }
     }

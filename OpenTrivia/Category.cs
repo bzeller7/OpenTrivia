@@ -7,18 +7,26 @@ using System.Threading.Tasks;
 namespace OpenTriviaConsumer
 {
     /// <summary>
-    /// Represents an Open Trivia
-    /// Category
+    ///A single category
     /// </summary>
-    class TriviaCategory
+    public class TriviaCategory
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 
+    /// <summary>
+    /// This object is return, when requesting
+    /// all categories
+    /// </summary>
     public class CategoryResponse
     {
         
-        public List<CategoryResponse> trivia_categories { get; set; }
+        public List<TriviaCategory> trivia_categories { get; set; }
     }
 }
